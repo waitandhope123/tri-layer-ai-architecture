@@ -6,7 +6,7 @@ This document contains both the ASCII-based diagram and a rendered flowchart of 
 
 ## 1. ASCII Diagram
 
-┌────────────────────────────────────────┐
+           ┌────────────────────────────────────────┐
            │               User Input               │
            └────────────────────────────────────────┘
                             │
@@ -36,6 +36,7 @@ This document contains both the ASCII-based diagram and a rendered flowchart of 
               │     MetaGuardian        │
               │ (Hidden Auditor/Logger) │
               └────────────────────────┘
+
 ---
 
 ## 2. Mermaid Diagram (Rendered by GitHub)
