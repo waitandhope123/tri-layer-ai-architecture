@@ -4,7 +4,7 @@
 **1.0.0**
 
 ## Release Date
-**March 2025**
+**November 2025**
 
 ## Description
 Initial public release of the **Tri-Layer Cooperative AI Oversight Architecture**.  
