@@ -101,3 +101,7 @@ This is **not functional AI code** — only a structural reference for understan
 
 ```python
 # See architecture_outline.py in this repository for the full conceptual example.
+---
+
+## Author
+Sam DeRenzis
