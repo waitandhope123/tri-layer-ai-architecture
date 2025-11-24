@@ -75,7 +75,8 @@ They form a cooperative system designed for stability, accuracy, and resistance 
 # 3. Data Flow Diagram
 
 Below is a clear text-based diagram of the flow:
-─────────────────────────────────────┐
+
+           ┌────────────────────────────────────────┐
            │               User Input               │
            └────────────────────────────────────────┘
                             │
@@ -105,6 +106,7 @@ Below is a clear text-based diagram of the flow:
               │     MetaGuardian        │
               │ (Hidden Auditor/Logger) │
               └────────────────────────┘
+
 ---
 
 # 4. Interaction Loop
@@ -185,4 +187,4 @@ orchestrator = Orchestrator(
     meta_guardian=MetaGuardian()
 )
 
-result = orchestrator.handle_request(user_input)              
+result = orchestrator.handle_request(user_input)
