@@ -80,8 +80,3 @@ It is intended as a blueprint for researchers, designers, and AI safety thinkers
 ---
 
 ## Repository Structure
-
----
-
-## Author
-Concept developed and published by the repository owner.
