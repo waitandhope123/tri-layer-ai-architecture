@@ -43,9 +43,9 @@ This document contains both the ASCII-based diagram and a rendered flowchart of 
 
 ```mermaid
 flowchart TD
-    A[User Input] --> B[SecondaryAI<br>(Generator/Actor)]
-    B -->|Proposed Solution| C[GuardianAI<br>(Logic/Safety Check)]
+    A[User Input] --> B[SecondaryAI (Generator / Actor)]
+    B -->|Proposed Solution| C[GuardianAI (Logic / Safety Check)]
     C -->|Errors + Fixes| B
     C -->|Approved| D[Output]
-    B -.-> E[MetaGuardian<br>(Hidden Auditor/Logger)]
+    B -.-> E[MetaGuardian (Hidden Auditor / Logger)]
     C -.-> E
