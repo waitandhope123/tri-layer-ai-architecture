@@ -39,6 +39,7 @@ This document contains both the ASCII-based diagram and a rendered flowchart of 
 
 ---
 
+```mermaid
 flowchart TD
     A["User Input"] --> B["SecondaryAI<br/>(Generator/Actor)"]
     B -->|Proposed Solution| C["GuardianAI<br/>(Logic/Safety Check)"]
@@ -46,3 +47,4 @@ flowchart TD
     C -->|Approved| D["Output"]
     B -.-> E["MetaGuardian<br/>(Hidden Auditor/Logger)"]
     C -.-> E
+```
