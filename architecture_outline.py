@@ -1,18 +1,28 @@
 """
-Tri-Layer Cooperative AI Architecture (Concept Sketch)
------------------------------------------------------
+Tri-Layer Cooperative AI Oversight Architecture (Concept Sketch)
+---------------------------------------------------------------
 
-This file contains a conceptual-only outline of the three-layer AI system:
-    - SecondaryAI (generator/solver)
-    - GuardianAI (logic/safety evaluator)
-    - MetaGuardian (invisible long-term auditor)
+This file contains a conceptual-only outline of the architecture:
+    - SecondaryAI (generator / actor)
+    - GuardianAI (evaluator / validator)
+    - MetaGuardian (out-of-band governance auditor)
 
-This is not executable AI code. It is a structural blueprint.
+This is NOT executable AI code.
+It is a structural blueprint intended for illustration only.
+
+In research or prototype settings without governance pipelines,
+the MetaGuardian layer should be omitted and the system reduces
+to a two-layer Generator–Verifier architecture.
 """
 
 
 class SecondaryAI:
-    """SecondaryAI: Generates solutions and fixes errors flagged by GuardianAI."""
+    """
+    SecondaryAI: Generator / Actor
+    - Produces candidate solutions
+    - Applies targeted repairs based on GuardianAI feedback
+    - Optimized for task completion under constraints
+    """
     def propose_solution(self, user_request):
         return {
             "content": "initial_solution_or_plan",
@@ -27,7 +37,12 @@ class SecondaryAI:
 
 
 class GuardianAI:
-    """GuardianAI: Analyzes logic, structure, and constraints of SecondaryAI outputs."""
+    """
+    GuardianAI: Evaluator / Validator
+    - Analyzes logic, structure, and constraints
+    - Does NOT generate or modify solutions
+    - Produces structured, actionable feedback
+    """
     def analyze(self, solution):
         return {
             "approved": False,
@@ -45,8 +60,11 @@ class GuardianAI:
 
 class MetaGuardian:
     """
-    MetaGuardian: Hidden auditor (invisible to both GuardianAI & SecondaryAI).
-    Observes interactions, tracks drift, and monitors long-term stability.
+    MetaGuardian: Out-of-band governance auditor
+    - Observes SecondaryAI–GuardianAI interactions over time
+    - Aggregates interaction histories
+    - Produces system health signals for external action
+    - Does NOT participate in runtime decision-making
     """
     def __init__(self):
         self.long_term_log = []
@@ -66,8 +84,14 @@ class MetaGuardian:
 
 
 class Orchestrator:
-    """Coordinates the three-layer flow."""
-    def __init__(self, secondary, guardian, meta_guardian):
+    """
+    Coordinates the cooperative repair loop.
+
+    NOTE:
+    - MetaGuardian operates out-of-band.
+    - In prototype settings, meta_guardian may be None.
+    """
+    def __init__(self, secondary, guardian, meta_guardian=None):
         self.secondary = secondary
         self.guardian = guardian
         self.meta_guardian = meta_guardian
@@ -79,7 +103,9 @@ class Orchestrator:
         current_solution = self.secondary.propose_solution(user_request)
         solution_history.append(current_solution)
 
-        for _ in range(10):  # conceptual loop only
+        MAX_ITERATIONS = 5  # bounded convergence per Seed.md
+
+        for _ in range(MAX_ITERATIONS):
             feedback = self.guardian.analyze(current_solution)
             feedback_history.append(feedback)
 
@@ -92,22 +118,35 @@ class Orchestrator:
             )
             solution_history.append(current_solution)
 
-        self.meta_guardian.observe_interaction(
-            user_request, solution_history, feedback_history
-        )
+        # Out-of-band observation only
+        if self.meta_guardian is not None:
+            self.meta_guardian.observe_interaction(
+                user_request, solution_history, feedback_history
+            )
 
         if feedback_history[-1]["approved"]:
             return current_solution
         else:
-            return {"content": "failed_to_converge", "reason": "too_many_iterations"}
+            return {
+                "content": "failed_to_converge",
+                "reason": "convergence_limit_exceeded"
+            }
 
 
 if __name__ == "__main__":
+    # Example configuration (conceptual only)
+
     secondary = SecondaryAI()
     guardian = GuardianAI()
+
+    # MetaGuardian included only when governance pipelines exist
     meta = MetaGuardian()
 
-    orchestrator = Orchestrator(secondary, guardian, meta)
+    orchestrator = Orchestrator(
+        secondary=secondary,
+        guardian=guardian,
+        meta_guardian=meta
+    )
 
     result = orchestrator.handle_request({"type": "example"})
     print("Result (conceptual only):", result)
