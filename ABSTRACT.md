@@ -1,15 +1,15 @@
 # Abstract
 
-This document presents the **Tri-Layer Cooperative AI Oversight Architecture**, a novel conceptual design intended to improve the stability, reasoning quality, and long-term reliability of artificial intelligence systems. Unlike traditional single-model structures, this architecture distributes cognitive responsibility across three specialized layers:
+This document presents the **Tri-Layer Cooperative AI Oversight Architecture**, a conceptual system design intended to explore how separating cognitive responsibilities within an AI system may improve stability, reasoning quality, and long-term oversight.
 
-1. **SecondaryAI** – a generative problem-solving model responsible for producing solutions and implementing repairs.
-2. **GuardianAI** – a dedicated logical and structural evaluator that analyzes outputs, identifies errors, and enforces constraints.
-3. **MetaGuardian** – a hidden, non-interactive auditor that monitors system-wide behavior for drift, anomalies, or long-term instability.
+Unlike traditional single-model architectures, this design distributes responsibility across three specialized roles:
 
-The system operates through a cooperative, multi-stage refinement loop in which SecondaryAI proposes solutions, GuardianAI validates and critiques them, and SecondaryAI applies corrections. MetaGuardian silently observes these interactions to detect emergent issues and ensure long-term consistency.
+1. **SecondaryAI** – a generator responsible for producing solutions and applying targeted repairs under explicit constraints.
+2. **GuardianAI** – a dedicated evaluator that analyzes the logical structure, constraints, and safety properties of outputs without generating content itself.
+3. **MetaGuardian** – a non-interactive, out-of-band auditor that aggregates interaction histories to support long-term governance, drift detection, and system-level oversight.
 
-This architecture aims to address fundamental weaknesses in current AI systems, particularly hallucinations, reasoning failures, and lack of internal oversight. By separating generation, evaluation, and systemic auditing, the model conceptually offers an estimated **5×–20× improvement** in reliability across complex or extended tasks.
+The system operates through a cooperative, bounded refinement loop in which SecondaryAI proposes a solution, GuardianAI evaluates and returns structured feedback, and SecondaryAI applies corrections until approval or a convergence limit is reached. MetaGuardian observes these interactions across time but does not participate in runtime decision-making.
 
-This framework is intended not as an implementation but as a high-level blueprint for future exploration, experimentation, and discussion among AI researchers and system designers.
+This architecture is motivated by known failure modes in single-model systems, including hallucinations, brittle self-correction, and degradation over extended tasks. By separating generation, evaluation, and oversight into distinct roles, the design aims to improve reliability in contexts where robust governance and monitoring pipelines exist.
 
----
+This framework is not an implementation and makes no empirical performance claims. It is intended as a high-level blueprint for research, comparison against simpler baselines (such as generator–verifier systems), and discussion among AI researchers, system designers, and governance practitioners.
