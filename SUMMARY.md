@@ -1,82 +1,98 @@
 # Summary of the Tri-Layer Cooperative AI Oversight Architecture
 
 ## Overview
-This document provides a concise summary of the **Tri-Layer Cooperative AI Oversight Architecture**, an original conceptual design featuring three distinct layers of cognitive responsibility:
 
-1. **SecondaryAI** – Generates solutions and repairs errors.  
-2. **GuardianAI** – Performs logic checking, structural analysis, and constraint validation.  
-3. **MetaGuardian** – A hidden, non-interactive auditor monitoring long-term behavior and drift.
+This document provides a concise summary of the **Tri-Layer Cooperative AI Oversight Architecture**, a conceptual system design that separates cognitive responsibilities across three distinct roles:
 
-Together, these layers form a cooperative, self-correcting system designed to enhance reliability, stability, and oversight.
+1. **SecondaryAI** – generates candidate solutions and applies targeted repairs under constraints.  
+2. **GuardianAI** – evaluates logical structure, constraints, and safety properties of outputs.  
+3. **MetaGuardian** – an out-of-band auditor that aggregates interaction histories for governance and long-term oversight.
+
+Together, these roles form a cooperative evaluation and repair system intended to improve reliability **in deployment contexts that support real governance pipelines**.
 
 ---
 
 ## Purpose
-The architecture aims to solve several fundamental weaknesses in single-model AI systems:
 
-- Logical inconsistencies  
-- Hallucinations  
-- Long-chain reasoning failures  
-- Drift across extended tasks  
-- Lack of internal oversight  
-- Accumulating error states  
+The architecture addresses known weaknesses in single-model AI systems, including:
 
-By distributing cognitive work across specialized roles, the system gains resilience and improved problem-solving capability.
+- hallucinations  
+- logical inconsistencies  
+- brittle self-correction  
+- degradation over extended tasks  
+- lack of internal evaluation boundaries  
+
+By separating generation, evaluation, and oversight into specialized roles, the system aims to improve error detection, correction, and long-term monitoring.
 
 ---
 
 ## Key Components
 
 ### **SecondaryAI**
-- Creative reasoning engine  
-- Produces initial solutions  
-- Repairs all errors flagged by GuardianAI  
-- Fully aware of the Guardian and cooperative with it  
+- Generates candidate solutions, plans, or code  
+- Operates under explicit constraints  
+- Applies repairs based on structured GuardianAI feedback  
 
 ### **GuardianAI**
-- Oversees logical and structural correctness  
-- Uses a shared reasoning language with SecondaryAI  
-- Provides structured, actionable feedback  
-- Approves only when all critical issues are resolved  
+- Evaluates logical structure and constraint adherence  
+- Operates on structured representations shared with SecondaryAI  
+- Produces actionable feedback  
+- Approves or rejects outputs without modifying them directly  
 
 ### **MetaGuardian**
-- Invisible to the lower two layers  
-- Detects long-term drift, pattern anomalies, or stability risks  
-- Can conceptually adjust system-wide constraints  
-- Acts purely as a silent auditor  
+- Operates outside the runtime decision loop  
+- Aggregates long-term interaction data  
+- Supports drift detection, anomaly reporting, and system health assessment  
+- Produces governance signals intended for external action (e.g., review, retraining, reconfiguration)  
+
+MetaGuardian adds no runtime value unless paired with operational follow-through.
 
 ---
 
 ## The Cooperative Repair Loop
-The system follows an iterative, self-correcting cycle:
 
-1. **SecondaryAI proposes** an initial output  
-2. **GuardianAI analyzes** the structure and logic  
-3. If errors exist → **GuardianAI issues feedback**  
-4. **SecondaryAI repairs** the output  
-5. The loop continues until GuardianAI approves  
-6. **MetaGuardian silently logs and evaluates the full interaction**
+The system follows a **bounded, cooperative refinement cycle**:
 
-This produces stronger reasoning and stability than single-model architectures.
+1. SecondaryAI proposes an initial output  
+2. GuardianAI evaluates structure and constraints  
+3. If issues are found, structured feedback is returned  
+4. SecondaryAI applies targeted repairs  
+5. The loop repeats until approval or a convergence limit is reached  
+6. MetaGuardian records the full interaction history out-of-band  
+
+Only Guardian-approved outputs are returned.
 
 ---
 
-## Benefits
+## Benefits and Limits
 
-- **5×–20× improvement** in reliability and long-chain reasoning  
-- Strong error detection and correction  
-- Reduced drift over time  
-- Better adherence to constraints  
-- Enhanced robustness against unknown emergent behavior  
-- More stable internal reasoning dynamics  
-- Cooperative “two-mind” structure with an invisible auditor  
+Potential benefits of this separation include:
+- clearer error localization  
+- improved correction of structured mistakes  
+- reduced accumulation of undetected errors  
+- readiness for governance and auditing in large-scale deployments  
+
+These benefits are **context-dependent**.  
+In research prototypes or single-instance deployments without operational governance, most of the practical value can be achieved with a simpler **two-layer Generator–Verifier architecture**.
+
+No empirical performance improvements are claimed.
 
 ---
 
 ## Status
-This concept is **theoretical**, not an implementation.  
-It is intended as a blueprint for researchers, designers, and AI safety thinkers exploring multi-layer cognitive systems.
+
+This architecture is **theoretical**, not an implementation.  
+It is intended as a blueprint for research, comparison against simpler baselines, and discussion among AI researchers, system designers, and governance practitioners.
 
 ---
 
 ## Repository Structure
+
+- `Seed.md` — canonical architectural definition and critique directives  
+- `README.md` — high-level overview and scope  
+- `ARCHITECTURE.md` — technical structure and interaction loops  
+- `CONCEPT.md` — conceptual motivation and design rationale  
+- `DIAGRAM.md` — conceptual diagrams  
+- `architecture_outline.py` — illustrative, non-executable pseudocode  
+- `VERSION.md` — version history  
+- `LICENSE` — MIT license
