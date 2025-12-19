@@ -1,190 +1,164 @@
 # Tri-Layer Cooperative AI Oversight Architecture  
 ### Technical Structure & System Design
 
-This document provides an engineering-level breakdown of the three-layer oversight system, including data flow, roles, diagrams, and conceptual interfaces.
+This document provides a technical breakdown of the **Tri-Layer Cooperative AI Oversight Architecture**, including component roles, data flow, interaction loops, and conceptual interfaces. This architecture is a **conceptual blueprint**, not an implementation.
+
+The full, canonical definition of this architecture is specified in `Seed.md`. This document elaborates on its technical structure.
 
 ---
 
-# 1. System Overview
+## 1. System Overview
 
-The architecture is composed of three specialized components:
+The architecture is composed of three specialized roles:
 
-1. **SecondaryAI** — Generation & reasoning engine  
-2. **GuardianAI** — Logical validation & structural oversight  
-3. **MetaGuardian** — Silent long-term auditor and drift detector  
+1. **SecondaryAI** — generator and task executor  
+2. **GuardianAI** — evaluator for logic, structure, and constraints  
+3. **MetaGuardian** — out-of-band system auditor and governance signaler  
 
-They form a cooperative system designed for stability, accuracy, and resistance to internal failures.
+Together, these roles form a cooperative system intended to improve reliability and oversight **in deployment contexts that support real governance pipelines**.
 
 ---
 
-# 2. Layer Responsibilities
+## 2. Layer Responsibilities
 
-## 2.1. SecondaryAI — *Generator*
-- Produces initial solutions  
-- Generates reasoning steps, plans, or code  
-- Applies repairs provided by GuardianAI  
-- Communicates through a structured, machine-readable representation  
-- Fully aware of the GuardianAI and works cooperatively with it  
+### 2.1. SecondaryAI — *Generator / Actor*
+- Produces initial solutions, plans, reasoning steps, or code  
+- Generates and operates on structured, machine-readable representations  
+- Applies targeted repairs based on GuardianAI feedback  
+- Is explicitly aware of GuardianAI and optimized for task completion under constraints  
 
-### Inputs
+**Inputs**
 - User request  
-- Guardian feedback  
+- Structured GuardianAI feedback  
 
-### Outputs
+**Outputs**
 - Proposed solution  
 - Revised solution  
 
 ---
 
-## 2.2. GuardianAI — *Evaluator*
-- Scans logical structure (graphs, ASTs, chains of thought)  
-- Identifies contradictions, constraints violations, safety issues  
-- Provides structured error objects with precise fix instructions  
+### 2.2. GuardianAI — *Evaluator / Validator*
+- Analyzes logical structure, constraints, and safety properties of SecondaryAI outputs  
+- Operates on shared structured representations (e.g., graphs, ASTs) rather than raw text alone  
+- Identifies contradictions, constraint violations, and unsafe steps  
+- Produces structured, actionable error reports  
 - Does **not** modify solutions directly  
-- Approves or rejects SecondaryAI outputs  
+- Approves or rejects outputs  
 
-### Inputs
+**Inputs**
 - SecondaryAI solutions  
 
-### Outputs
-- Approval or  
-- Error list (with fixes)  
+**Outputs**
+- Approval decision  
+- Structured error list with corrective guidance  
 
 ---
 
-## 2.3. MetaGuardian — *Invisible Auditor*
-- Observes every interaction between SecondaryAI and GuardianAI  
-- Maintains long-term logs of system behavior  
-- Detects:
-  - anomalous patterns  
-  - repeated error modes  
-  - drift  
-  - degradation over time  
-- Cannot be detected or influenced by the other layers  
+### 2.3. MetaGuardian — *Out-of-Band Auditor*
+- Operates outside the runtime decision loop  
+- Observes interactions between SecondaryAI and GuardianAI across time  
+- Aggregates interaction histories for longitudinal analysis  
+- Does **not** communicate with or influence the lower layers during execution  
 
-### Inputs
-- Full interaction history  
+MetaGuardian’s outputs are intended to feed **external governance and operational workflows**, such as:
+- drift and anomaly reporting  
+- rejection-rate monitoring  
+- triggers for human review, retraining, reconfiguration, or decommissioning  
 
-### Outputs
-- System health evaluation  
-- Drift alerts  
-- Constraint tightening (conceptually)  
+MetaGuardian adds no runtime value unless paired with such action channels.
 
----
+**Inputs**
+- Full interaction histories  
 
-# 3. Data Flow Diagram
-
-Below is a clear text-based diagram of the flow:
-
-           ┌────────────────────────────────────────┐
-           │               User Input               │
-           └────────────────────────────────────────┘
-                            │
-                            ▼
-              ┌────────────────────────┐
-              │      SecondaryAI       │
-              │   (Generator/Actor)    │
-              └────────────────────────┘
-                            │
-                     Proposed Solution
-                            │
-                            ▼
-              ┌────────────────────────┐
-              │       GuardianAI       │
-              │ (Logic/Safety Check)   │
-              └────────────────────────┘
-                  │              │
-                  │ Approved     │ Errors + Fixes
-                  ▼              │
-             ┌───────────┐       │
-             │  Output   │◄──────┘
-             └───────────┘
-                           
-                          (Meanwhile)
-                            ▼
-              ┌────────────────────────┐
-              │     MetaGuardian        │
-              │ (Hidden Auditor/Logger) │
-              └────────────────────────┘
+**Outputs**
+- System health metrics  
+- Drift or anomaly reports  
+- Governance signals (out-of-band)  
 
 ---
 
-# 4. Interaction Loop
+## 3. Data Flow (Conceptual)
+User Input ↓ SecondaryAI (Generate) ↓ GuardianAI (Evaluate) ├── Approved → Output └── Errors → SecondaryAI (Repair)
 
-The system works through a **multi-pass refinement loop**:
+[MetaGuardian observes all interactions out-of-band]
 
-### Step 1 — SecondaryAI generates  
-`solution = SecondaryAI.propose(user_request)`
-
-### Step 2 — GuardianAI checks  
-`feedback = GuardianAI.analyze(solution)`
-
-### Step 3 — If errors exist  
-`solution = SecondaryAI.repair(solution, feedback)`
-
-### Step 4 — Loop  
-Repeat steps 2–3 until GuardianAI approves.
-
-### Step 5 — MetaGuardian logs  
-`MetaGuardian.observe(solution_history, feedback_history)`
+MetaGuardian does not participate in per-request decisions.
 
 ---
 
-# 5. Internal Representation
+## 4. Cooperative Interaction Loop
 
-Both SecondaryAI and GuardianAI share a **reasoning format**, such as:
+The system operates through a **bounded refinement loop**:
 
+1. SecondaryAI generates an initial solution  
+2. GuardianAI evaluates and either approves or returns structured feedback  
+3. SecondaryAI applies targeted repairs  
+4. Steps 2–3 repeat until:
+   - approval is reached, or  
+   - a convergence limit is exceeded  
+
+**Convergence constraints**
+- Maximum iteration limit (e.g., 5 passes)  
+- Escalation if GuardianAI rejects repeatedly without actionable new feedback  
+- Safe fallback output if convergence fails  
+
+MetaGuardian records the full interaction history for post hoc analysis.
+
+---
+
+## 5. Internal Representations
+
+SecondaryAI and GuardianAI share structured intermediate representations, such as:
 - logic graphs  
-- structured plan trees  
+- plan trees  
 - abstract syntax trees (ASTs)  
-- graph-structured reasoning chains  
 
-This ensures that GuardianAI can analyze the structure of the SecondaryAI’s thought process.
-
----
-
-# 6. Benefits of the Architectural Split
-
-### Reliability
-Multiple checkpoints significantly reduce hallucinations and false reasoning.
-
-### Stability
-MetaGuardian prevents system drift and unnoticed degradation.
-
-### Transparency
-Guardian feedback provides interpretable diagnostic information.
-
-### Robustness
-The architecture can withstand internal faults better than single-model systems.
-
-### Emergent Behavior Control
-If unexpected reasoning patterns develop, MetaGuardian detects them early.
+These representations enable structural evaluation without requiring access to raw reasoning traces.
 
 ---
 
-# 7. Failure Modes & Mitigation
+## 6. Benefits of the Architectural Split
 
-### Potential Issue 1 — Non-converging loops  
-**Mitigation:** Hard iteration limits, fallback outputs.
+- **Improved reliability** through separation of generation and evaluation  
+- **Better error localization** via structured feedback  
+- **Longitudinal oversight** through out-of-band monitoring  
+- **Governance readiness** for fleet-scale deployment  
 
-### Potential Issue 2 — Feedback cycles too strict  
-**Mitigation:** Adaptive tolerance ranges.
-
-### Potential Issue 3 — GuardianAI error  
-**Mitigation:** MetaGuardian monitors approval patterns for anomalies.
-
-### Potential Issue 4 — SecondaryAI overfitting to Guardian  
-**Mitigation:** Shared but orthogonally trained reasoning spaces.
+These benefits are **context-dependent** and should be evaluated against simpler baselines.
 
 ---
 
-# 8. Conceptual Pseudocode (High-Level)
+## 7. Failure Modes & Mitigation
+
+**Non-converging repair loops**  
+- Mitigation: strict iteration limits and safe fallback behavior  
+
+**Overly strict evaluation**  
+- Mitigation: tolerance calibration and feedback quality monitoring  
+
+**Evaluator blind spots or drift**  
+- Mitigation: MetaGuardian trend analysis and retraining triggers  
+
+**Overfitting to the evaluator**  
+- Mitigation: differentiated training objectives and evaluation diversity  
+
+---
+
+## 8. Scope Limitation
+
+In research prototypes or single-instance deployments without operational governance, the MetaGuardian layer should be omitted.  
+In such settings, the architecture reduces to a **two-layer Generator–Verifier system**, which captures most of the practical value.
+
+---
+
+## 9. Conceptual Pseudocode (Illustrative Only)
 
 ```python
 orchestrator = Orchestrator(
     secondary=SecondaryAI(),
     guardian=GuardianAI(),
-    meta_guardian=MetaGuardian()
+    meta_guardian=MetaGuardian()  # omitted in prototype settings
 )
 
 result = orchestrator.handle_request(user_input)
+```
