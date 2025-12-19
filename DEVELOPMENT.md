@@ -1,4 +1,4 @@
-# Development and Refinement Process
+# Development Process and Provenance
 
 This document describes how the **Tri-Layer Cooperative AI Oversight Architecture** was developed, refined, and stabilized, and clarifies the roles played by the human author and external AI tools during that process.
 
