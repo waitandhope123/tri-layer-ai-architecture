@@ -1,7 +1,7 @@
 # Version Information
 
 ## Current Version
-**1.1.0**
+**1.0.0**
 
 ## Release Date
 **November 2025**
