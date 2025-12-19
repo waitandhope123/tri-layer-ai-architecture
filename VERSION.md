@@ -10,7 +10,7 @@
 
 This release represents a **clarified and hardened conceptual specification** of the **Tri-Layer Cooperative AI Oversight Architecture**.
 
-Version 1.1.0 introduces:
+Version 1.0.0 introduces:
 - Explicit separation between runtime evaluation and out-of-band governance
 - Clear scope limits distinguishing fleet-scale deployments from research prototypes
 - Removal of implicit performance claims
