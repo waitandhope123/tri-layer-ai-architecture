@@ -1,10 +1,12 @@
 # System Diagrams
 
-This document contains both the ASCII-based diagram and a rendered flowchart of the Tri-Layer Cooperative AI Oversight Architecture.
+This document provides conceptual diagrams illustrating the data flow and role separation in the **Tri-Layer Cooperative AI Oversight Architecture**.
+
+These diagrams are illustrative only and do not imply implementation details.
 
 ---
 
-## 1. ASCII Diagram
+## 1. ASCII Diagram (Conceptual)
 
            ┌────────────────────────────────────────┐
            │               User Input               │
@@ -13,7 +15,7 @@ This document contains both the ASCII-based diagram and a rendered flowchart of 
                             ▼
               ┌────────────────────────┐
               │      SecondaryAI       │
-              │   (Generator/Actor)    │
+              │   (Generator / Actor)  │
               └────────────────────────┘
                             │
                      Proposed Solution
@@ -21,30 +23,31 @@ This document contains both the ASCII-based diagram and a rendered flowchart of 
                             ▼
               ┌────────────────────────┐
               │       GuardianAI       │
-              │ (Logic/Safety Check)   │
+              │ (Evaluator / Validator)│
               └────────────────────────┘
                   │              │
-                  │ Approved     │ Errors + Fixes
+                  │ Approved     │ Errors + Feedback
                   ▼              │
              ┌───────────┐       │
              │  Output   │◄──────┘
              └───────────┘
-                           
-                          (Meanwhile)
-                            ▼
+
+        [MetaGuardian observes all interactions out-of-band]
+
               ┌────────────────────────┐
               │     MetaGuardian        │
-              │ (Hidden Auditor/Logger) │
+              │ (Governance Auditor)    │
               └────────────────────────┘
 
----
+MetaGuardian does not participate in runtime decision-making.
+Its outputs are intended for external governance and operational workflows.
 
-```mermaid
+## 2. Rendered Flowchart (Mermaid)
 flowchart TD
-    A["User Input"] --> B["SecondaryAI<br/>(Generator/Actor)"]
-    B -->|Proposed Solution| C["GuardianAI<br/>(Logic/Safety Check)"]
-    C -->|Errors + Fixes| B
+    A["User Input"] --> B["SecondaryAI<br/>(Generator / Actor)"]
+    B -->|Proposed Solution| C["GuardianAI<br/>(Evaluator / Validator)"]
+    C -->|Errors + Feedback| B
     C -->|Approved| D["Output"]
-    B -.-> E["MetaGuardian<br/>(Hidden Auditor/Logger)"]
+
+    B -.-> E["MetaGuardian<br/>(Out-of-Band Auditor)"]
     C -.-> E
-```
